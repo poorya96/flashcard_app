@@ -1,0 +1,97 @@
+body {
+  background-color: #121212;
+  color: white;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 1rem;
+}
+.container {
+  max-width: 600px;
+  margin: auto;
+  text-align: center;
+}
+.flashcard {
+  background-color: #1e1e1e;
+  border: 1px solid #444;
+  padding: 1rem;
+  border-radius: 10px;
+  perspective: 1000px;
+  min-height: 280px;
+}
+.card-inner {
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+  position: relative;
+}
+.flashcard.flipped .card-inner {
+  transform: rotateY(180deg);
+}
+.card-front,
+.card-back {
+  position: absolute;
+  width: 100%;
+  backface-visibility: hidden;
+}
+.card-back {
+  transform: rotateY(180deg);
+}
+.row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0.6rem 0;
+}
+input {
+  flex: 1;
+  padding: 0.4rem;
+  margin-right: 0.5rem;
+}
+button {
+  padding: 0.4rem 1rem;
+  background: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+.syllable:nth-child(1) {
+  color: red;
+}
+.syllable:nth-child(2) {
+  color: cyan;
+}
+.syllable:nth-child(3) {
+  color: limegreen;
+}
+.syllable:nth-child(4) {
+  color: orange;
+}
+.syllable:nth-child(5) {
+  color: violet;
+}
+.info {
+  margin: 1rem;
+}
+.syllable-line {
+  text-align: center;
+  font-size: 1.1rem;
+  margin: 0.6rem 0;
+}
+.card-back {
+  padding-top: 1rem;
+}
+button.flip-btn {
+  margin-top: 1rem;
+  background-color: #444;
+  border: none;
+  padding: 0.4rem 1rem;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+}
+button.flip-btn:hover {
+  background-color: #666;
+}
+.status {
+  margin-left: 1rem;
+  font-size: 1.2rem;
+}
