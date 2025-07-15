@@ -66,6 +66,7 @@ function renderBack() {
   group.forEach((card, i) => {
     const line = document.createElement("div");
     line.className = "syllable-line";
+
     const syllablesHTML = card.syllables
       .map((s, j) => `<span class='syllable'>${s}</span>`)
       .join(" ");
@@ -74,7 +75,11 @@ function renderBack() {
     if (answers[i] === true) status = "✅";
     else if (answers[i] === false) status = "❌";
 
-    line.innerHTML = `${syllablesHTML} <span class="status">${status}</span>`;
+    line.innerHTML = `
+      ${syllablesHTML}
+      <button onclick="event.stopPropagation(); playSound('${card.word}')">🔊</button>
+      <span class="status">${status}</span>
+    `;
     back.appendChild(line);
   });
 }
