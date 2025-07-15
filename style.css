@@ -95,3 +95,16 @@ button.flip-btn:hover {
   margin-left: 1rem;
   font-size: 1.2rem;
 }
+
+.syllable-line button {
+  margin-left: 1rem;
+  padding: 0.2rem 0.6rem;
+  background-color: #333;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.syllable-line button:hover {
+  background-color: #555;
+}
