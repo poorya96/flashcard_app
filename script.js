@@ -4,6 +4,7 @@
 // - حالت مرور کلی همه کلمات
 // - ادامه از آخرین کارت ذخیره‌شده یا شروع از کارت دلخواه
 // - امکان رفتن مستقیم به کارت خاص یا شروع از اول
+// - نمایش همه کلمات به صورت ردیفی در مرور کلی
 
 let allWords = [];      // کل لغات
 let cards = [];         // فلش‌کارت‌ها (گروهی)
@@ -175,16 +176,22 @@ function next() {
 function renderReviewAll() {
   const container = document.querySelector(".container");
   container.innerHTML = `<h2>All Words (Syllables + Sound)</h2>`;
-
+  const grid = document.createElement("div");
+  grid.style.display = "flex";
+  grid.style.flexWrap = "wrap";
+  grid.style.gap = "12px";
   allWords.forEach((card) => {
     const line = document.createElement("div");
     line.className = "syllable-line";
+    line.style.flex = "1 1 calc(45% - 12px)";
+    line.style.minWidth = "300px";
     const syls = card.syllables
       .map((s, j) => `<span class='syllable'>${s}</span>`)
       .join(" ");
     line.innerHTML = `
       ${syls}
       <button onclick=\"playSound('${card.word}')\">🔊</button>`;
-    container.appendChild(line);
+    grid.appendChild(line);
   });
+  container.appendChild(grid);
 }
