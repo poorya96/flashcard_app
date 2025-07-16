@@ -5,6 +5,7 @@
 // - ادامه از آخرین کارت ذخیره‌شده یا شروع از کارت دلخواه
 // - امکان رفتن مستقیم به کارت خاص یا شروع از اول
 // - نمایش همه کلمات به صورت ردیفی در مرور کلی
+// - نمایش کلمات انتخابی در حالت Review All بر اساس لیست ورودی از کاربر
 
 let allWords = [];      // کل لغات
 let cards = [];         // فلش‌کارت‌ها (گروهی)
@@ -175,25 +176,50 @@ function next() {
 
 function renderReviewAll() {
   const container = document.querySelector(".container");
-  container.innerHTML = `<h2>All Words (Syllables + Sound)</h2>`;
+  container.innerHTML = `<h2>Selected Words (Syllables + Sound)</h2>`;
+
+  const input = document.createElement("textarea");
+  input.placeholder = "Enter words separated by commas (e.g. climate,pharmaceutical)";
+  input.style.width = "100%";
+  input.style.margin = "10px 0";
+  input.rows = 3;
+
+  const btn = document.createElement("button");
+  btn.innerText = "Show Words";
+  btn.onclick = () => {
+    const values = input.value
+      .split(",")
+      .map((w) => w.trim().toLowerCase())
+      .filter((w) => w);
+
+    const filtered = allWords.filter((card) => values.includes(card.word.toLowerCase()));
+    displayWordGrid(filtered);
+  };
+
+  container.appendChild(input);
+  container.appendChild(btn);
+}
+
+function displayWordGrid(wordList) {
   const grid = document.createElement("div");
   grid.style.display = "flex";
   grid.style.flexWrap = "wrap";
   grid.style.gap = "12px";
   grid.style.alignItems = "center";
-  allWords.forEach((card) => {
+  grid.style.marginTop = "20px";
+
+  wordList.forEach((card) => {
     const item = document.createElement("div");
     item.className = "syllable-line";
     item.style.display = "inline-flex";
     item.style.alignItems = "center";
     item.style.marginRight = "24px";
-    const syls = card.syllables
-      .map((s, j) => `<span class='syllable'>${s}</span>`)
-      .join(" ");
-    item.innerHTML = `
-      ${syls}
-      <button onclick=\"playSound('${card.word}')\">🔊</button>`;
+
+    const syls = card.syllables.map((s, j) => `<span class='syllable'>${s}</span>`).join(" ");
+    item.innerHTML = `${syls} <button onclick=\"playSound('${card.word}')\">🔊</button>`;
     grid.appendChild(item);
   });
+
+  const container = document.querySelector(".container");
   container.appendChild(grid);
 }
