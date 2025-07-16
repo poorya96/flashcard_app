@@ -76,7 +76,7 @@ function startWrongOnlyMode() {
 }
 function startReviewAllMode() {
   reviewMode = "review-all";
-  renderReviewAll();
+  renderReviewAll(allWords);
 }
 
 function render() {
@@ -174,9 +174,9 @@ function next() {
   }
 }
 
-function renderReviewAll() {
+function renderReviewAll(defaultList) {
   const container = document.querySelector(".container");
-  container.innerHTML = `<h2>Selected Words (Syllables + Sound)</h2>`;
+  container.innerHTML = `<h2>All Words (Syllables + Sound)</h2>`;
 
   const input = document.createElement("textarea");
   input.placeholder = "Enter words separated by commas (e.g. climate,pharmaceutical)";
@@ -185,7 +185,7 @@ function renderReviewAll() {
   input.rows = 3;
 
   const btn = document.createElement("button");
-  btn.innerText = "Show Words";
+  btn.innerText = "Filter Words";
   btn.onclick = () => {
     const values = input.value
       .split(",")
@@ -198,10 +198,16 @@ function renderReviewAll() {
 
   container.appendChild(input);
   container.appendChild(btn);
+
+  displayWordGrid(defaultList);
 }
 
 function displayWordGrid(wordList) {
+  const existingGrid = document.getElementById("word-grid");
+  if (existingGrid) existingGrid.remove();
+
   const grid = document.createElement("div");
+  grid.id = "word-grid";
   grid.style.display = "flex";
   grid.style.flexWrap = "wrap";
   grid.style.gap = "12px";
