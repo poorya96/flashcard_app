@@ -28,6 +28,9 @@
       <button onclick="prev()">◀ Prev</button>
       <button onclick="next()">Next ▶</button>
       <button onclick="flipCard()">🔁 Flip</button>
+      <input id="gotoInput" type="number" placeholder="Card #" min="1" style="width: 80px;">
+      <button onclick="goToCard(document.getElementById('gotoInput').value - 1)">Go</button>
+      <button onclick="resetToFirstCard()">⏪ Start Over</button>
       <br />
       <button onclick="startNormalMode()">🧠 Normal Mode</button>
       <button onclick="startWrongOnlyMode()">❌ Review Wrong</button>
