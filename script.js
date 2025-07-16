@@ -180,18 +180,20 @@ function renderReviewAll() {
   grid.style.display = "flex";
   grid.style.flexWrap = "wrap";
   grid.style.gap = "12px";
+  grid.style.alignItems = "center";
   allWords.forEach((card) => {
-    const line = document.createElement("div");
-    line.className = "syllable-line";
-    line.style.flex = "1 1 calc(45% - 12px)";
-    line.style.minWidth = "300px";
+    const item = document.createElement("div");
+    item.className = "syllable-line";
+    item.style.display = "inline-flex";
+    item.style.alignItems = "center";
+    item.style.marginRight = "24px";
     const syls = card.syllables
       .map((s, j) => `<span class='syllable'>${s}</span>`)
       .join(" ");
-    line.innerHTML = `
+    item.innerHTML = `
       ${syls}
       <button onclick=\"playSound('${card.word}')\">🔊</button>`;
-    grid.appendChild(line);
+    grid.appendChild(item);
   });
   container.appendChild(grid);
 }
