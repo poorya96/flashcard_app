@@ -1,9 +1,9 @@
 // 🔥 نسخه‌ی نهایی script.js با تمام ویژگی‌های درخواستی:
-// - شافل
 // - ذخیره‌ی پیشرفت در localStorage
 // - حالت مرور کلمات غلط
 // - حالت مرور کلی همه کلمات
-// - پخش صدا در جلو و پشت کارت
+// - ادامه از آخرین کارت ذخیره‌شده یا شروع از کارت دلخواه
+// - امکان رفتن مستقیم به کارت خاص یا شروع از اول
 
 let allWords = [];      // کل لغات
 let cards = [];         // فلش‌کارت‌ها (گروهی)
@@ -11,8 +11,9 @@ let currentIndex = 0;   // کارت فعلی
 let answers = [null, null, null, null]; // درست/غلط برای هر کارت
 let reviewMode = "normal"; // modes: normal, wrong, review-all
 
-// --- یار ذخیره‌سازی در localStorage ---
 const STORAGE_KEY = "flashcard_progress";
+const LAST_CARD_KEY = "last_card_index";
+
 function saveProgress(word, isCorrect) {
   const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
   saved[word] = isCorrect;
@@ -21,13 +22,25 @@ function saveProgress(word, isCorrect) {
 function loadProgress() {
   return JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
 }
+function saveCurrentIndex(index) {
+  localStorage.setItem(LAST_CARD_KEY, index);
+}
+function loadLastIndex() {
+  return parseInt(localStorage.getItem(LAST_CARD_KEY) || "0", 10);
+}
 
-// --- شافل کردن آرایه ---
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
+function goToCard(index) {
+  if (index >= 0 && index < cards.length) {
+    currentIndex = index;
+    saveCurrentIndex(currentIndex);
+    render();
   }
+}
+
+function resetToFirstCard() {
+  currentIndex = 0;
+  saveCurrentIndex(currentIndex);
+  render();
 }
 
 // --- بارگذاری داده ---
@@ -38,7 +51,6 @@ fetch("data.json")
     startNormalMode();
   });
 
-// --- ساخت کارت‌ها از آرایه کلمات ---
 function buildCards(wordArray) {
   cards = [];
   for (let i = 0; i < wordArray.length; i += 4) {
@@ -46,12 +58,10 @@ function buildCards(wordArray) {
   }
 }
 
-// --- حالت‌های مختلف شروع ---
 function startNormalMode() {
   reviewMode = "normal";
-  shuffle(allWords);
   buildCards(allWords);
-  currentIndex = 0;
+  currentIndex = loadLastIndex();
   render();
 }
 function startWrongOnlyMode() {
@@ -67,7 +77,6 @@ function startReviewAllMode() {
   renderReviewAll();
 }
 
-// --- رندر فلش‌کارت ---
 function render() {
   const flashcard = document.querySelector(".flashcard");
   const front = document.getElementById("card-front");
@@ -104,7 +113,6 @@ function render() {
   counter.innerText = `Card ${currentIndex + 1} of ${cards.length}`;
 }
 
-// --- پشت کارت با تیک/ضربدر + صدا ---
 function renderBack() {
   const back = document.getElementById("card-back");
   const group = cards[currentIndex];
@@ -151,6 +159,7 @@ function checkAnswer(input, correct, index) {
 function prev() {
   if (currentIndex > 0) {
     currentIndex--;
+    saveCurrentIndex(currentIndex);
     render();
   }
 }
@@ -158,11 +167,11 @@ function prev() {
 function next() {
   if (currentIndex < cards.length - 1) {
     currentIndex++;
+    saveCurrentIndex(currentIndex);
     render();
   }
 }
 
-// --- حالت مرور کامل ---
 function renderReviewAll() {
   const container = document.querySelector(".container");
   container.innerHTML = `<h2>All Words (Syllables + Sound)</h2>`;
