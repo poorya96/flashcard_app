@@ -9,21 +9,32 @@
 <body>
   <div class="container">
     <h1>Flashcard Trainer</h1>
-    <div id="card" class="flashcard" onclick="flipCard()">
+
+    <!-- فلش‌کارت -->
+    <div id="card" class="flashcard">
       <div class="card-inner" id="card-inner">
         <div class="card-front" id="card-front"></div>
         <div class="card-back" id="card-back"></div>
       </div>
     </div>
-    <button onclick="flipCard()">🔁 Flip Card</button>
+
+    <!-- شمارنده -->
     <div class="info">
       <span id="card-counter"></span>
     </div>
+
+    <!-- دکمه‌ها -->
     <div class="controls">
       <button onclick="prev()">◀ Prev</button>
       <button onclick="next()">Next ▶</button>
+      <button onclick="flipCard()">🔁 Flip</button>
+      <br />
+      <button onclick="startNormalMode()">🧠 Normal Mode</button>
+      <button onclick="startWrongOnlyMode()">❌ Review Wrong</button>
+      <button onclick="startReviewAllMode()">📚 All Words</button>
     </div>
   </div>
+
   <script src="script.js"></script>
 </body>
 </html>
